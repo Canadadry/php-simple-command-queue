@@ -13,8 +13,7 @@ function StartServer(){
 	$socket->on('connection', function (ConnectionInterface $conn) {
 		printf("Hello " . $conn->getRemoteAddress() . "!\n");
 	    
-	    $conn->write("Hello " . $conn->getRemoteAddress() . "!\n");
-	    $conn->write("Say \"{'action':'talk'}\" for instruction\n");
+		tellPresentation($conn);
 
 	    $conn->on('data', function ($data) use ($conn) {
 	    	handleIncommingData($data,$conn);
@@ -32,28 +31,54 @@ function handleIncommingData($data,ConnectionInterface $conn)
 
 	switch ($decodedData->action) {
 		case 'talk':
-			$conn->write("What do you whant to do ? \nStart a couting script or stop an existing one ?\nSo what's gonna be ? start or stop\n");
+			tellPresentation($conn);
+			break;
+		case 'list':
+			tellAction($conn);
 			break;
 		case 'start':
 			startMyScript();
-			$conn->write("Script is starting!\n");
+			tellMessage($conn,"Script is starting!\n");
+			break;
+		case 'status':
+			tellMessage($conn,getStatusOfMyScript()."\n");
 			break;
 		case 'stop':
 			stopMyScript();
-			$conn->write("Stopping script!\n");
+			tellMessage($conn,"Stopping script!\n");
 			break;
 		case 'out':
-			$conn->write(file_get_contents('nohup.out'));
+			tellMessage($conn,file_get_contents('nohup.out'));
+			break;
+		case 'delete':
+			unlink('nohup.out');
+			tellMessage($conn,"output removed");
 			break;
 		default: handleBadInput($conn,'switch failed');
 	}
+}
 
+function tellPresentation(ConnectionInterface $conn)
+{	    
+	tellMessage($conn,"Hello " . $conn->getRemoteAddress() . "!\nWhat do you whant to do ? \nIf you dont know start by sending this json data\"{'action':'list'}\"\nWe will allways be exchanging json data");
+}
+
+function tellAction(ConnectionInterface $conn)
+{
+	$actions = json_encode(["start","stop","out","list","talk","delete","status"]);
+	$msg = "Here what you can do";
+	$conn->write("{\"message\":\"$msg\",\"actions\":$actions,\"status\":200}");
+}
+
+function tellMessage(ConnectionInterface $conn,$msg,$status = 200)
+{
+	$conn->write(json_encode(["message"=>$msg,"status"=>$status]));
 }
 
 function handleBadInput(ConnectionInterface $conn,$reason)
 {
 	echo "Some client say shit... ($reason)\n";
-    $conn->write("Mal formatted message sended : $reason ! Send \"{'action':'talk'}\" for instruction\n");
+	tellMessage($conn,"Mal formatted message sended : $reason ! Send \"{'action':'talk'}\" for instruction\n",400);
 }
 
 // thanks to https://stackoverflow.com/questions/19553905/php-how-to-start-a-detached-process
@@ -66,6 +91,11 @@ function stopMyScript() {
     $otherProcessInfo = array_filter(explode(' ', $otherProcessInfo[0]));
     $otherProcessId = $otherProcessInfo[0];
     exec("kill $otherProcessId");
+}
+
+function getStatusOfMyScript() {
+    exec('ps a | grep count.php | grep -v grep', $otherProcessInfo);
+    return $otherProcessInfo[0];
 }
 
 StartServer();
