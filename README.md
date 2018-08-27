@@ -77,9 +77,9 @@ $loop->run();
 
 ```bash
 src/server.php 8080 src/ &
-echo '{"action":"start", "message":"count.php"}' | netcat 127.0.0.1 8080
-echo '{"action":"stop", "message":"count.php"}' | netcat 127.0.0.1 8080
-echo '{"action":"out", "message":"count.php"}' | netcat 127.0.0.1 8080
+echo '{"action":"start", "parameter":"count.php"}' | netcat 127.0.0.1 8080
+echo '{"action":"stop", "parameter":"count.php"}' | netcat 127.0.0.1 8080
+echo '{"action":"out", "parameter":"count.php"}' | netcat 127.0.0.1 8080
 ```
 
 
