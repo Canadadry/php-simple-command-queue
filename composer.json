@@ -4,5 +4,8 @@
     "type": "project",
     "require": {
         "react/socket": "^1.0.0"
+    },
+    "bin": ["src/server.php"],
+    "require-dev": {
     }
 }
