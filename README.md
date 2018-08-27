@@ -12,14 +12,12 @@ Right now you can launch the server on port 8080 with
 
 ```
 php src/server.php port script_folder
-
 ```
 
 for example 
 
 ```
 php src/server.php 8080 src/
-
 ```
 
 ## Interaction
