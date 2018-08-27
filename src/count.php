@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php 
 
 $i = 0;

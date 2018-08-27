@@ -116,7 +116,7 @@ class Server
 	// thanks to https://stackoverflow.com/questions/19553905/php-how-to-start-a-detached-process
 	function startMyScript($scriptName = "count.php") 
 	{
-	    exec("nohup php $this->scriptPath$scriptName > $scriptName.out & > /dev/null");
+	    exec("nohup $this->scriptPath$scriptName > $scriptName.out & > /dev/null");
 	}
 
 	function stopMyScript($scriptName = "count.php")

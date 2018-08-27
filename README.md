@@ -4,7 +4,7 @@
 
 The aim of this project is to build a small app that listen to a socket and can launch script. 
 
-For now it only launch php script.
+Be sure your script are executable.
 
 This app only dependency is on `react/socket` wich as very few dependency.
 
