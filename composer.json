@@ -1,0 +1,8 @@
+{
+    "name": "canadadry/php-simple-command-queue",
+    "description": "This is a small command queue project written in php. It can start and stop script from socket request",
+    "type": "project",
+    "require": {
+        "react/socket": "^1.0.0"
+    }
+}
