@@ -62,6 +62,44 @@ $connector->connect('127.0.0.1:8080')->then(
 $loop->run();
 ```
 
+## Protocole
+
+All exchange are json based. 
+
+### Request
+
+You cann only send a json object with two parameters :
+
+  * action
+  * parameter
+
+### Response
+
+The server allways encapsulate answer in json data with three possible parameters : 
+
+  * messsage
+  * status : 200 if every thing went ok 400 otherwise
+  * actions : array of all action if you ask for it
+
+### Example
+
+Request
+
+```json
+{
+    "action":"status"
+}
+```
+
+Response
+
+```json
+{
+    "message":"status of count.php\n25082 s003  S+     0:00.06 php src/count.php",
+    "status":"200"
+}
+```
+
 ## Action
 
   * *talk* : give instruction
