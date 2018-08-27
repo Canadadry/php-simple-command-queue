@@ -9,7 +9,7 @@ use React\Socket\ConnectionInterface;
 $loop = Factory::create();
 
 $connector = new Connector($loop);
-$connector->connect('127.0.0.1:8080')->then(
+$connector->connect('127.0.0.1:8084')->then(
 	function (ConnectionInterface $connection)
 	{
 		$connection->on('data', 
@@ -30,8 +30,17 @@ $connector->connect('127.0.0.1:8080')->then(
 				}
 
 				$command = readline("\n> ");   
+				$commandParsed = explode(" ", $command);
+				if(array_key_exists(1, $commandParsed))
+				{
+					$request = json_encode(["action"=>$commandParsed[0],"parameter"=>$commandParsed[1]]);
+				}
+				else
+				{
+					$request = json_encode(["action"=>$commandParsed[0]]);
+				}
 
-				$connection->write("{\"action\":\"$command\"}");
+				$connection->write($request);
 			}
 		);
 		$connection->on('close', function () { echo '[CLOSED]' . PHP_EOL; });
