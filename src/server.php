@@ -22,9 +22,9 @@ class Server
 		if(count($argv) > 2 && is_dir($argv[2]) )
 		{
 			$this->scriptPath = $argv[2];
-			if(substr($scriptPath, -1)!='/')
+			if(substr($this->scriptPath, -1)!='/')
 			{
-				$this->scriptPath = $scriptPath . '/';
+				$this->scriptPath = $this->scriptPath . '/';
 			}
 		}
 
