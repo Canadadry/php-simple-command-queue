@@ -83,6 +83,9 @@ class Server
 			case 'out':
 				$this->tellMessage($conn,file_get_contents($parameter.'.out'));
 				break;
+			case 'exit':
+				exit(0);
+				break;
 			case 'delete':
 				unlink('nohup.out');
 				$this->tellMessage($conn,"output removed");
@@ -98,7 +101,7 @@ class Server
 
 	function tellAction(ConnectionInterface $conn)
 	{
-		$actions = json_encode(["start","stop","out","list","talk","delete","status"]);
+		$actions = json_encode(["start","stop","out","list","talk","delete","status","exit"]);
 		$msg = "Here what you can do";
 		$conn->write("{\"message\":\"$msg\",\"actions\":$actions,\"status\":200}");
 	}
