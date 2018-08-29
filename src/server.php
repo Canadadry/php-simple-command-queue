@@ -103,12 +103,14 @@ class Server
 	{
 		$actions = json_encode(["start","stop","out","list","talk","delete","status","exit"]);
 		$msg = "Here what you can do";
-		$conn->write("{\"message\":\"$msg\",\"actions\":$actions,\"status\":200}");
+		$conn->write("{\"message\":\"$msg\",\"actions\":$actions,\"status\":200}");		
+		$conn->close();
 	}
 
 	function tellMessage(ConnectionInterface $conn,$msg,$status = 200)
 	{
 		$conn->write(json_encode(["message"=>$msg,"status"=>$status]));
+		$conn->close();
 	}
 
 	function handleBadInput(ConnectionInterface $conn,$reason)
